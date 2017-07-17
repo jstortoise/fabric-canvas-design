@@ -1,0 +1,347 @@
+﻿<!DOCTYPE html>
+<!-- saved from url=(0041)http://dev.thetshirtguylv.com/canvas.html -->
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>T-Shirt Designer</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <!--<link rel="stylesheet" type="text/css" href="css/bootstrap-theme.css">-->
+    <!--<link rel="stylesheet" type="text/css" href="css/components.min.css">-->
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/global.js"></script>
+    <script type="text/javascript" src="js/xmlToJSON.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8 col-sm-8" style="padding-left: 50px; height: 800px; overflow-y: auto;">
+                <canvas id="myCanvas" width="1200" height="800" style="border: 1px solid #aaa"></canvas>
+            </div>
+            <div class="col-md-4 editcolorbox col-sm-4">
+                <div style="text-align: center;">
+                    <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group with nested dropdown">
+                        <a class="btn btn-default" id="addText" style="border-radius: 0px"><span class="addtextimg"><img src="image/addtext.png">Add Text</span>
+                            </a>
+                        <div class="btn-group toolbox" role="group">
+                            <a class="btn btn-default dropdown-toggle" id="addclipart" role="button" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown" style="border-radius: 0px">
+                                <span class="addtextimg">
+                                <img src="image/addclipart.png"> Add Clipart
+                                </a>
+                                <ul class="dropdown-menu" id="listClipArt">
+                                </ul>
+                            </div>
+                            <a class="btn btn-default" id="uploadart" style="border-radius: 0px"><span class="addtextimg"><img src="image/uploadclipart.png"> Upload Art</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row pane editcolor">
+                        <div class="col-md-2 tab_custom">
+                            <ul class="nav nav-pills nav-stacked" id="clipart_layer">
+
+                            </ul>
+                        </div>
+                        <div class="col-md-10 optionbox">
+                            <div class="row optioncontent">
+                                <div class="colortab_custom">
+                                    <div class="edittextbox" style="display: none;">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <textarea name="" rows="4" placeholder="-- enter your text here --" id="tbxbefore" class="form-control" style="font-size: 11px"></textarea>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <button class="btn btn-primary" id="gotext" style="float: right;">Add Text</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="texteditor" style="display: none;">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <textarea name="" rows="3" id="tbx" class="form-control" style="font-size: 11px"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Font</label>
+                                                <select name="" id="dlFonts_form" class="form-control"></select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="" class="control-label">Color</label><br>
+                                                <div class="colorlayer">
+                                                    <a class="btn btn-default colorpicker selectcolor" style="background-color:#1c1a1c;" id="fillcolor"></a>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="">Stroke</label><br>
+                                                <div class="colorlayer">
+                                                    <a class="btn btn-default colorpicker selectcolor" id="strokecolor" style="background-image: url(image/trans-color.png);" data-id="none"></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="firstp">
+                                            <div class="row">
+                                                <span class="span_bold">Width</span>
+                                                <input class="rangesty" type="range" min="30" max="300" step="1" id="clipart_stretch_range" pattern="[0-9]*" value="1">
+                                                <input class="text_radis form-control" type="number" min="30" max="300" step="1" id="clipart_stretch_text" pattern="[0-9]*" value="1">
+                                            </div>
+                                            <div class="row">
+                                                <span class="lockimg" id="lock" data-lock="true" style="position:relative;float:left"></span>
+                                            </div>
+                                            <div class="row">
+                                                <span class="span_bold">Height</span>
+                                                <input class="rangesty" type="range" min="10" max="300" step="0.1" id="clipart_lnheight_range" pattern="[0-9]*">
+                                                <input class="text_radis form-control" type="number" min="0.5" max="3" step="0.1" id="clipart_lnheight_text" pattern="[0-9]*">
+                                            </div>
+                                            <div class="row">
+                                                <span class="span_bold">Spacing</span>
+                                                <input class="rangesty" type="range" min="-50" max="50" step="1" id="clipart_spacing_range" pattern="[0-9]*" value="0">
+                                                <input class="text_radis form-control" type="number" min="-50" max="50" step="1" id="clipart_spacing_text" pattern="[0-9]*" value="0">
+                                            </div>
+                                            <div class="row">
+                                                <span class="span_bold">Rotate</span>
+                                                <input class="rangesty" type="range" min="-360" max="360" step="1" id="clipart_rotate_range" pattern="[0-9]*" value="0">
+                                                <input class="text_radis form-control" type="number" min="-360" max="360" step="1" id="clipart_rotate_text" pattern="[0-9]*" value="0">
+                                            </div>
+                                            <div class="row">
+                                                <span class="span_bold">Arc</span>
+                                                <input class="rangesty" type="range" min="-360" max="360" step="1" id="clipart_arc_range" pattern="[0-9]*" value="0">
+                                                <input class="text_radis form-control" type="number" min="-360" max="360" step="1" id="clipart_arc_text" pattern="[0-9]*" value="0">
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <span class="span_bold layout_label" style="width: 120px;">layer order</span>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    &nbsp;
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <span class="span_bold layout_label" style="width: 100px;">position</span>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4 layout_col4">
+                                                    <button class="btn btn-default layer_up layout_btn">
+                                                        <span class="bring_forwoard">Forward</span>
+                                                    </button>
+                                                </div>
+                                                <div class="col-md-4 layout_col4">
+                                                    <button class="btn btn-default layer_down layout_btn">
+                                                        <span class="send_backward">Backward</span>
+                                                    </button>
+                                                </div>
+                                                <div class="col-md-4 layout_col4">
+                                                    <button class="btn btn-default position_center layout_btn"><span class="position_center">Center</span></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="secondp">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <buttion class="accordion" id="colorx">
+                                                        <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span> Ink Color
+                                                    </buttion>
+                                                    <div class="panel">
+
+                                                        <div class="row">
+                                                            <div class="col-md-12" id="colorpad">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <buttion class="accordion" id="patternx"><span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span> Pattern</buttion>
+                                                    <div class="panel">
+                                                        <div class="row">
+                                                            <div class="col-md-12" id="patternpad">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <buttion class="accordion" id="glitterx"><span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span> Glitter</buttion>
+                                                    <div class="panel">
+                                                        <div class="row">
+                                                            <div class="col-md-12" id="glitterpad">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12" style="margin-bottom: 4px;">
+                                                    <a href="#" class="btn btn-default selectcolor" title="Shirt Color" style="background: url(image/trans-color.png);"></a>
+                                                    <span> No Ink(Shirt fabric will show through)</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="cliparteditor">
+                                        <ul class="nav nav-tabs colordiv colorlayer">
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div id="home" class="tab-pane fade secondp in active">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <buttion class="accordion1" id="colorx">
+                                                            <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span> Ink Color</buttion>
+                                                        <div class="panel1">
+                                                            <div class="row">
+                                                                <div class="col-md-12" id="colorpad">
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <buttion class="accordion1" id="patternx"><span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span> Pattern</buttion>
+                                                        <div class="panel1">
+                                                            <div class="row">
+                                                                <div class="col-md-12" id="patternpad">
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <buttion class="accordion1" id="glitterx"><span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span> Glitter</buttion>
+                                                        <div class="panel">
+                                                            <div class="row">
+                                                                <div class="col-md-12" id="glitterpad">
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12" style="margin-bottom: 4px;">
+                                                        <a href="#" class="btn btn-default selectcolor" title="Shirt Color" style="background: url(image/trans-color.png);"></a>
+                                                        <span> No Ink(Shirt fabric will show through)</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="firstp">
+                                            <div class="row">
+                                                <span class="span_bold">width</span>
+                                                <input class="rangesty" type="range" min="0" max="2000" id="clipart_width_range" pattern="[0-9]*">
+                                                <input class="text_radis form-control" type="number" min="0.1" max="2000" id="clipart_width_text" pattern="[0-9]*">
+                                            </div>
+                                            <div class="row">
+                                                <span class="lockimg" id="lock" data-lock="true" style="position:relative;float:left"></span>
+                                            </div>
+                                            <div class="row">
+                                                <span class="span_bold">height</span>
+                                                <input class="rangesty" type="range" min="0.1" max="2000" id="clipart_height_range" pattern="[0-9]*">
+                                                <input class="text_radis form-control" type="number" min="0.1" max="2000" id="clipart_height_text" pattern="[0-9]*">
+                                            </div>
+                                            <div class="row">
+                                                <span class="span_bold">rotate</span>
+                                                <input class="rangesty" type="range" min="-360" max="360" id="clipart_angle_range" pattern="[0-9]*">
+
+                                                <input class="text_radis form-control" type="number" min="-360" max="360" id="clipart_angle_text" pattern="[0-9]*">
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <span class="span_bold layout_label">layer order</span>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    &nbsp;
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <span class="span_bold layout_label">position</span>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4 layout_col4">
+                                                    <button class="btn btn-default layer_up layout_btn">
+                                                        <span class="bring_forwoard">Forward</span>
+                                                    </button>
+
+                                                </div>
+                                                <div class="col-md-4 layout_col4">
+                                                    <button class="btn btn-default layer_down layout_btn">
+                                                        <span class="send_backward">Backward</span>
+                                                    </button>
+                                                </div>
+                                                <div class="col-md-4 layout_col4">
+                                                    <button class="btn btn-default position_center layout_btn">
+                                                        <span class="position_center">Center</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row placementeditor">
+                                <div class="col-md-11">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <img class="img-responsive womenimg" src="image/shirt_preview.png">
+                                            <h5 style="text-align: center">LPC54</h5>
+                                        </div>
+                                        <div class="placement-panel">
+                                            <div class="col-md-2 active">
+                                                <img class="img-responsive shirtimg" id="placement_1" src="http://api.thetshirtguylv.com/image/placement/full_front.png">
+                                                <h5 id="placement_name_1">Full Front</h5>
+                                                <span class="placement-close"></span>
+                                                <span class="placement-update"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-1" style="padding-left:0px">
+                                    <button class="btn btn-primary" data-toggle="modal" data-target=".placement-modal" id="addplacementbtn">
+                                        <span class="glyphicon glyphicon-folder-open"></span><span>Design&nbsp;&nbsp;</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade placement-modal" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myLargeModalLabel">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Modal title</h4>
+                        </div>
+                        <div class="modal-body">
+
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="select_placement">Select a placement</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script type="text/javascript" src="js/fabric-1.6.6.js"></script>
+            <script type="text/javascript" src="js/customiseControls.min.js"></script>
+            <script type="text/javascript" src="js/fabric-canvas.js"></script>
+            <script type="text/javascript" src="js/canvas.js"></script>
+            <script type="text/javascript" crossorigin="anonymous">
+            </script>
+
+</body>
+
+</html>
